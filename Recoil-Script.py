@@ -12,11 +12,8 @@ engine.setProperty("voice", voices[1].id)
 engine.say("Hello and welcome")
 engine.runAndWait()
 
-
 mouse = Controller()
 active = True
-# pageUp = win32api.GetKeyState(0x21)
-# pageDown = win32api.GetKeyState(0x22)
 
 ControlTime_Ak47 =  121.96149709966872, 92.6333814724611, 138.60598637206294, 113.37874368443146, 66.25151186427745, 66.29530438019354, 75.9327831420658, 85.05526144256157, 89.20256669256554, 86.68010184667988, 78.82145888317788, 70.0451048111144, 60.85979604582978, 59.51642457624619, 71.66762996283607, 86.74060009403034, 98.3363599080854, 104.34161954944257, 104.09299204005345, 97.58780746901739, 85.48062700875559, 70.4889202349561, 56.56417811530545, 47.386907899993936, 56.63787408680247, 91.5937793023631, 112.38667610336424, 111.39338971888095, 87.5067801164596 
 
@@ -61,9 +58,28 @@ MuzzleBoost = False
 
 userSens = 0.4
 
+all_weapons = ["None", "AK", "LR", "MP5", "Custom", "Thompson", "Sar", "M249"]
+current_weapon = 0
+current_weapon_name = all_weapons[0]
+
+def weapon_down():
+    current_weapon = current_weapon + 1
+    current_weapon_name = all_weapons[current_weapon]
+
+# pageUp = win32api.GetKeyState(0x21)
+# pageDown = win32api.GetKeyState(0x22)
+
 while active:
     while win32api.GetKeyState(0x01) < 0 and win32api.GetKeyState(0x02) < 0:
         mouse.move(-1,-1)
         time.sleep(0.001)
-    if win32api.GetKeyState(0x2D) < 0:
+    if win32api.GetKeyState(0x2D) < 0: #insert key
+        engine.say("Exiting")
+        engine.runAndWait()
         active = False
+    if win32api.GetKeyState(0x21) < 0: #page up
+        engine.say("Weapon Up")
+        engine.runAndWait()
+    if win32api.GetKeyState(0x22) < 0: #page down
+        engine.say("Weapon Down")
+        engine.runAndWait()
