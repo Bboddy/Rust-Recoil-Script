@@ -58,16 +58,15 @@ MuzzleBoost = False
 
 userSens = 0.4
 
+global all_weapons, current_weapon, current_weapon_name
 all_weapons = ["None", "AK", "LR", "MP5", "Custom", "Thompson", "Sar", "M249"]
 current_weapon = 0
 current_weapon_name = all_weapons[0]
 
-def weapon_down():
-    current_weapon = current_weapon + 1
+def weapon_change(num):
+    current_weapon = current_weapon + num
     current_weapon_name = all_weapons[current_weapon]
 
-# pageUp = win32api.GetKeyState(0x21)
-# pageDown = win32api.GetKeyState(0x22)
 
 while active:
     while win32api.GetKeyState(0x01) < 0 and win32api.GetKeyState(0x02) < 0:
@@ -78,8 +77,10 @@ while active:
         engine.runAndWait()
         active = False
     if win32api.GetKeyState(0x21) < 0: #page up
-        engine.say("Weapon Up")
+        weapon_change(1)
+        engine.say(current_weapon_name)
         engine.runAndWait()
     if win32api.GetKeyState(0x22) < 0: #page down
-        engine.say("Weapon Down")
+        weapon_change(-1)
+        engine.say(current_weapon_name)
         engine.runAndWait()
