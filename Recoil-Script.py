@@ -63,9 +63,17 @@ all_weapons = ["None", "AK", "LR", "MP5", "Custom", "Thompson", "Sar", "M249"]
 current_weapon = 0
 current_weapon_name = all_weapons[0]
 
+print(current_weapon_name)
+print(current_weapon)
+
 def weapon_change(num):
-    current_weapon = current_weapon + num
-    current_weapon_name = all_weapons[current_weapon]
+    if current_weapon == 0 and num == -1:
+        current_weapon = 7
+    elif current_weapon == 7 and num == 1:
+        current_weapon = 0
+    else:
+        current_weapon += num
+        current_weapon_name = all_weapons[current_weapon]
 
 
 while active:
