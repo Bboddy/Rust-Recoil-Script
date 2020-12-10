@@ -1,6 +1,17 @@
 import win32api
 import time
+import pyttsx3
 from pynput.mouse import Button, Controller
+
+engine = pyttsx3.init()
+engine.setProperty("volume", 0.5)
+engine.setProperty("rate", 200)
+voices = engine.getProperty("voices")
+engine.setProperty("voice", voices[1].id)
+
+engine.say("Hello and welcome")
+engine.runAndWait()
+
 
 mouse = Controller()
 active = True
