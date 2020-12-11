@@ -42,7 +42,7 @@ scope_none = 1.0
 barrel_suppressor = 0.8
 barrel_none = 1.0
 
-Reload = False
+none = False
 AK47 = False
 LR300 = False
 MP5 = False
@@ -50,6 +50,7 @@ CSMG = False
 THOMPSON = False
 Semi = False
 M249 = False
+
 s8x = False
 Holo = False
 Simple = False
@@ -58,23 +59,16 @@ MuzzleBoost = False
 
 userSens = 0.4
 
-global all_weapons, current_weapon, current_weapon_name
 all_weapons = ["None", "AK", "LR", "MP5", "Custom", "Thompson", "Sar", "M249"]
-current_weapon = 0
-current_weapon_name = all_weapons[0]
+active_weapon = 0
 
-print(current_weapon_name)
-print(current_weapon)
-
-def weapon_change(num):
-    if current_weapon == 0 and num == -1:
-        current_weapon = 7
-    elif current_weapon == 7 and num == 1:
-        current_weapon = 0
+def weapon_change(int):
+    if int == -1 and active_weapon == 0:
+        return 7
+    elif int == 1 and active_weapon == 7:
+        return 0
     else:
-        current_weapon += num
-        current_weapon_name = all_weapons[current_weapon]
-
+        return (active_weapon + int)
 
 while active:
     while win32api.GetKeyState(0x01) < 0 and win32api.GetKeyState(0x02) < 0:
@@ -85,10 +79,10 @@ while active:
         engine.runAndWait()
         active = False
     if win32api.GetKeyState(0x21) < 0: #page up
-        weapon_change(1)
-        engine.say(current_weapon_name)
+        active_weapon = weapon_change(1)
+        engine.say(all_weapons[active_weapon])
         engine.runAndWait()
     if win32api.GetKeyState(0x22) < 0: #page down
-        weapon_change(-1)
-        engine.say(current_weapon_name)
+        active_weapon = weapon_change(-1)
+        engine.say(all_weapons[active_weapon])
         engine.runAndWait()
