@@ -1,8 +1,7 @@
 import win32api #To get key states
+import ctypes 
 import time
 import pyttsx3 #TTS
-import random
-import pyautogui as pag #Current Mouse move library
 
 #TTS Settings
 engine = pyttsx3.init()
@@ -55,6 +54,9 @@ all_weapons = ["None", "AK", "LR", "MP5", "Custom", "Thompson", "SAR", "M249"]
 active_weapon = 0
 global current_bullet, current_delay, recoil_value_x, recoil_value_y
 
+def mover(x,y):
+    ctypes.windll.user32.mouse_event(0x0001, int(x), int(y), 0, 0)
+
 def weapon_change(int):
     if int == -1 and active_weapon == 0:
         return 7
@@ -68,42 +70,42 @@ def pull_down(active_weapon):
     current_bullet = 0
     if active_weapon == 1:
         while current_bullet < len(Recoil_Ak47) and win32api.GetKeyState(0x01) < 0:
-            pag.moveRel(((Recoil_Ak47[current_bullet][0] / 4) / userSens), ((Recoil_Ak47[current_bullet][1] / 4) / userSens))
+            mover(((Recoil_Ak47[current_bullet][0] / 4) / userSens), ((Recoil_Ak47[current_bullet][1] / 4) / userSens))
             time.sleep(ControlTime_Ak47[current_bullet] / 1000)
             current_bullet += 1
     elif active_weapon == 2:
         while current_bullet < len(Recoil_Lr300) and win32api.GetKeyState(0x01) < 0:
-            pag.moveRel(((Recoil_Lr300[current_bullet][0] / 4) / userSens), ((Recoil_Lr300[current_bullet][1] / 4) / userSens))
+            mover(((Recoil_Lr300[current_bullet][0] / 4) / userSens), ((Recoil_Lr300[current_bullet][1] / 4) / userSens))
             time.sleep(lr_delay / 1000)
             current_bullet += 1
     elif active_weapon == 3:
         while current_bullet < len(Recoil_Mp5a4) and win32api.GetKeyState(0x01) < 0:
-            pag.moveRel(((Recoil_Mp5a4[current_bullet][0] / 4) / userSens), ((Recoil_Mp5a4[current_bullet][1] / 4) / userSens))
+            mover(((Recoil_Mp5a4[current_bullet][0] / 4) / userSens), ((Recoil_Mp5a4[current_bullet][1] / 4) / userSens))
             time.sleep(mp5_delay / 1000)
             current_bullet += 1
     elif active_weapon == 4:
         while current_bullet < len(Recoil_Custom) and win32api.GetKeyState(0x01) < 0:
-            pag.moveRel(((Recoil_Custom[current_bullet][0] / 4) / userSens), ((Recoil_Custom[current_bullet][1] / 4) / userSens))
+            mover(((Recoil_Custom[current_bullet][0] / 4) / userSens), ((Recoil_Custom[current_bullet][1] / 4) / userSens))
             time.sleep(custom_delay / 1000)
             current_bullet += 1
     elif active_weapon == 5:
         while current_bullet < len(Recoil_Thompson) and win32api.GetKeyState(0x01) < 0:
-            pag.moveRel(((Recoil_Thompson[current_bullet][0] / 4) / userSens), ((Recoil_Thompson[current_bullet][1] / 4) / userSens))
+            mover(((Recoil_Thompson[current_bullet][0] / 4) / userSens), ((Recoil_Thompson[current_bullet][1] / 4) / userSens))
             time.sleep(tom_delay / 1000)
             current_bullet += 1
     elif active_weapon == 6:
         while current_bullet < 20 and win32api.GetKeyState(0x01) < 0:
-            pag.moveRel(((Recoil_Semi[0][0] / 4) / userSens), ((Recoil_Semi[0][1] / 4) / userSens))
+            mover(((Recoil_Semi[0][0] / 4) / userSens), ((Recoil_Semi[0][1] / 4) / userSens))
             time.sleep(semi_delay / 1000)
             current_bullet += 1
     elif active_weapon == 7:
         while current_bullet < 100 and win32api.GetKeyState(0x01) < 0:
-            pag.moveRel(((Recoil_M249[0][0] / 4) / userSens), ((Recoil_M249[0][1] / 4) / userSens))
+            mover(((Recoil_M249[0][0] / 4) / userSens), ((Recoil_M249[0][1] / 4) / userSens))
             time.sleep(m249_delay / 1000)
             current_bullet += 1
 
 while active:
-    while win32api.GetKeyState(0x01) < 0: #and win32api.GetKeyState(0x02) < 0:
+    while win32api.GetKeyState(0x01) < 0 and win32api.GetKeyState(0x02) < 0:
         pull_down(active_weapon)
     if win32api.GetKeyState(0x2D) < 0: #insert key
         engine.say("Exiting")
