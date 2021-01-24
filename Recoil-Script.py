@@ -10,7 +10,7 @@ engine.setProperty("volume", 0.5)
 engine.setProperty("rate", 350)
 voices = engine.getProperty("voices")
 engine.setProperty("voice", voices[1].id)
-engine.say("Page up and page down to cycle. Insert to exit.")
+engine.say("Page up and page down to cycle. Insert to exit. Home for scopes")
 engine.runAndWait() #Run engine.say and wait till done
 ########### Recoil Tables
 Recoil_AK = [[-36.3583, 52.3906], [5.6019, 48.1107], [-57.7970, 43.7258], [-44.4413, 39.2358], [-0.1867, 34.6408], [17.4687, 29.9408], [30.7335, 25.1358], [39.6080, 20.2258], [44.0919, 15.2107], [44.1854, 10.0906], [39.8884, 10.3678], [31.2010, 19.1802], [18.1232, 26.1569], [0.9701, 31.1046], [-15.7055, 34.0233], [-28.9507, 34.9129], [-38.7704, 33.7734], [-45.1648, 30.6050], [-48.1337, 25.4073], [-47.6774, 18.1807], [-43.7956, 8.9251], [-36.4885, 5.1987], [-25.7559, 14.5390], [-11.5980, 21.8952], [12.5535, 26.8223], [37.8676, 29.3207], [50.8869, 29.3899], [51.5930, 27.0302], [39.9856, 22.2415]]
@@ -29,21 +29,14 @@ custom_delay = 100
 tom_delay = 129.22
 semi_delay = 150
 m249_delay = 103
-########### Recoil Multipliers
-scope_x8 = 3.84
-scope_x16 = 7.68
-scope_holo = 1.2
-scope_simple = 0.8
-scope_none = 1.0
-barrel_suppressor = 0.8
-barrel_none = 1.0
-
+########### Cycling Info
 userSens = 0.5
 
 all_scopes = ["None", "8x", "16x", "Holo", "Simple",]
 all_weapons = ["None", "AK", "LR", "MP5", "Custom", "Thompson", "SAR", "M2"]
 active_weapon = 0
 active_scope = 0
+active_scope_value = 1
 
 def mouse_move(x,y):
     ctypes.windll.user32.mouse_event(0x0001, int(x), int(y), 0, 0)
@@ -60,6 +53,18 @@ def scope_change():
     else:
         return active_scope + 1
 
+def get_active_scope_value():
+    if active_scope == 0:
+        return 1
+    elif active_scope == 1:
+        return 3.84
+    elif active_scope == 2:
+        return 7.68
+    elif active_scope == 3:
+        return 1.2
+    elif active_scope == 4:
+        return 0.8
+
 def weapon_change(int):
     if int == -1 and active_weapon == 0:
         return 7
@@ -73,43 +78,43 @@ def pull_down(active_weapon):
     if active_weapon == 1:
         while current_bullet < len(Recoil_AK) and win32api.GetKeyState(0x01) < 0:
             #((Weapons.Current_weapon().Item1[i, 0] / 2) / Menu.sense) * Weapons.Attachment().Item1 * Weapons.Scope()
-            mouse_move(((Recoil_AK[current_bullet][0] / 2) / userSens), ((Recoil_AK[current_bullet][1] / 2) / userSens))
+            mouse_move((((Recoil_AK[current_bullet][0] / 2) / userSens) * active_scope_value), (((Recoil_AK[current_bullet][1] / 2) / userSens) * active_scope_value))
             time.sleep(ak_delay/ 1000)
             current_bullet += 1
     elif active_weapon == 2:
         while current_bullet < len(Recoil_LR) and win32api.GetKeyState(0x01) < 0:
-            mouse_move(((Recoil_LR[current_bullet][0] / 2) / userSens), ((Recoil_LR[current_bullet][1] / 2) / userSens))
+            mouse_move((((Recoil_LR[current_bullet][0] / 2) / userSens) * active_scope_value), (((Recoil_LR[current_bullet][1] / 2) / userSens) * active_scope_value))
             time.sleep(lr_delay / 1000)
             current_bullet += 1
     elif active_weapon == 3:
         while current_bullet < len(Recoil_MP5) and win32api.GetKeyState(0x01) < 0:
-            mouse_move(((Recoil_MP5[current_bullet][0] / 2) / userSens), ((Recoil_MP5[current_bullet][1] / 2) / userSens))
+            mouse_move((((Recoil_MP5[current_bullet][0] / 2) / userSens) * active_scope_value), (((Recoil_MP5[current_bullet][1] / 2) / userSens) * active_scope_value))
             time.sleep(mp5_delay / 1000)
             current_bullet += 1
     elif active_weapon == 4:
         while current_bullet < len(Recoil_Custom) and win32api.GetKeyState(0x01) < 0:
-            mouse_move(((Recoil_Custom[current_bullet][0] / 2) / userSens), ((Recoil_Custom[current_bullet][1] / 2) / userSens))
+            mouse_move((((Recoil_Custom[current_bullet][0] / 2) / userSens) * active_scope_value), (((Recoil_Custom[current_bullet][1] / 2) / userSens) * active_scope_value))
             time.sleep(custom_delay / 1000)
             current_bullet += 1
     elif active_weapon == 5:
         while current_bullet < len(Recoil_Thompson) and win32api.GetKeyState(0x01) < 0:
-            mouse_move(((Recoil_Thompson[current_bullet][0] / 2) / userSens), ((Recoil_Thompson[current_bullet][1] / 2) / userSens))
+            mouse_move((((Recoil_Thompson[current_bullet][0] / 2) / userSens) * active_scope_value), (((Recoil_Thompson[current_bullet][1] / 2) / userSens) * active_scope_value))
             time.sleep(tom_delay / 1000)
             current_bullet += 1
     elif active_weapon == 6:
         while current_bullet < 20 and win32api.GetKeyState(0x01) < 0:
             if win32api.GetKeyState(0x11) < 0: # If Crouching
-                mouse_move(((Recoil_SAR[0][0] / 4) / userSens), ((Recoil_SAR[0][1] / 4) / userSens))
+                mouse_move((((Recoil_SAR[0][0] / 4) / userSens) * active_scope_value), (((Recoil_SAR[0][1] / 4) / userSens) * active_scope_value))
             else:
-                mouse_move(((Recoil_SAR[0][0] / 8) / userSens), ((Recoil_SAR[0][1] / 4) / userSens))
+                mouse_move((((Recoil_SAR[0][0] / 8) / userSens) * active_scope_value), (((Recoil_SAR[0][1] / 4) / userSens) * active_scope_value))
             time.sleep(semi_delay / 1000)
             current_bullet += 1
     elif active_weapon == 7:
         while current_bullet < 100 and win32api.GetKeyState(0x01) < 0:
             if win32api.GetKeyState(0x11) < 0: # If Crouching
-                mouse_move(((Recoil_M2[0][0] / 4) / userSens), ((Recoil_M2[0][1] / 4) / userSens))
+                mouse_move((((Recoil_M2[0][0] / 4) / userSens) * active_scope_value), (((Recoil_M2[0][1] / 4) / userSens) * active_scope_value))
             else:
-                mouse_move(((Recoil_M2[0][0] / 8) / userSens), ((Recoil_M2[0][1] / 4) / userSens))
+                mouse_move((((Recoil_M2[0][0] / 8) / userSens) * active_scope_value), (((Recoil_M2[0][1] / 2) / userSens) * active_scope_value))
             time.sleep(m249_delay / 1000)
             current_bullet += 1
 
@@ -130,5 +135,6 @@ while active:
         engine.runAndWait()
     if win32api.GetKeyState(0x24) < 0: #Home
         active_scope = scope_change()
+        active_scope_value = get_active_scope_value()
         engine.say(all_scopes[active_scope])
         engine.runAndWait()
