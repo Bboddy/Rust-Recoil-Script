@@ -21,6 +21,7 @@ Recoil_Thompson = [[-15.8279, 33.4964], [-5.8047, 33.011], [3.5853, 31.6299], [1
 Recoil_SAR = [[0, 75], [0, 75]]
 Recoil_M2 = [[0,60],[0,60]]
 ########### Recoil Timings
+ControlTime_Ak47 = [ 121.96149709966872, 92.6333814724611, 138.60598637206294, 113.37874368443146, 66.25151186427745, 66.29530438019354, 75.9327831420658, 85.05526144256157, 89.20256669256554, 86.68010184667988, 78.82145888317788, 70.0451048111144, 60.85979604582978, 59.51642457624619, 71.66762996283607, 86.74060009403034, 98.3363599080854, 104.34161954944257, 104.09299204005345, 97.58780746901739, 85.48062700875559, 70.4889202349561, 56.56417811530545, 47.386907899993936, 56.63787408680247, 91.5937793023631, 112.38667610336424, 111.39338971888095, 87.5067801164596 ]
 ak_delay = (400 / 3)
 lr_delay = 120
 mp5_delay = 100
@@ -39,8 +40,10 @@ barrel_none = 1.0
 
 userSens = 0.5
 
+all_scopes = ["None", "8x", "16x", "Holo", "Simple",]
 all_weapons = ["None", "AK", "LR", "MP5", "Custom", "Thompson", "SAR", "M2"]
 active_weapon = 0
+active_scope = 0
 
 def mouse_move(x,y):
     ctypes.windll.user32.mouse_event(0x0001, int(x), int(y), 0, 0)
@@ -50,6 +53,12 @@ def left_click(delay):
     time.sleep(delay)
     ctypes.windll.user32.mouse_event(4, 0, 0, 0,0) # left up
     time.sleep(delay)
+
+def scope_change():
+    if active_scope == 4:
+        return 0
+    else:
+        return active_scope + 1
 
 def weapon_change(int):
     if int == -1 and active_weapon == 0:
@@ -62,7 +71,7 @@ def weapon_change(int):
 def pull_down(active_weapon):
     current_bullet = 0
     if active_weapon == 1:
-        while current_bullet < len(Recoil_Ak47) and win32api.GetKeyState(0x01) < 0:
+        while current_bullet < len(Recoil_AK) and win32api.GetKeyState(0x01) < 0:
             #((Weapons.Current_weapon().Item1[i, 0] / 2) / Menu.sense) * Weapons.Attachment().Item1 * Weapons.Scope()
             mouse_move(((Recoil_AK[current_bullet][0] / 2) / userSens), ((Recoil_AK[current_bullet][1] / 2) / userSens))
             time.sleep(ak_delay/ 1000)
@@ -111,11 +120,15 @@ while active:
         engine.say("Exiting")
         engine.runAndWait()
         active = False
-    if win32api.GetKeyState(0x21) < 0: #PageUp
+    if win32api.GetKeyState(0x22) < 0: #PageDown
         active_weapon = weapon_change(1)
         engine.say(all_weapons[active_weapon])
         engine.runAndWait()
-    if win32api.GetKeyState(0x22) < 0: #PageDown
+    if win32api.GetKeyState(0x21) < 0: #PageUp
         active_weapon = weapon_change(-1)
         engine.say(all_weapons[active_weapon])
+        engine.runAndWait()
+    if win32api.GetKeyState(0x24) < 0: #Home
+        active_scope = scope_change()
+        engine.say(all_scopes[active_scope])
         engine.runAndWait()
