@@ -41,12 +41,6 @@ active_scope_value = 1
 def mouse_move(x,y):
     ctypes.windll.user32.mouse_event(0x0001, int(x), int(y), 0, 0)
 
-def left_click(delay):
-    ctypes.windll.user32.mouse_event(2, 0, 0, 0,0) # left down
-    time.sleep(delay)
-    ctypes.windll.user32.mouse_event(4, 0, 0, 0,0) # left up
-    time.sleep(delay)
-
 def scope_change():
     if active_scope == 4:
         return 0
@@ -77,7 +71,6 @@ def pull_down(active_weapon):
     current_bullet = 0
     if active_weapon == 1:
         while current_bullet < len(Recoil_AK) and win32api.GetKeyState(0x01) < 0:
-            #((Weapons.Current_weapon().Item1[i, 0] / 2) / Menu.sense) * Weapons.Attachment().Item1 * Weapons.Scope()
             mouse_move((((Recoil_AK[current_bullet][0] / 2) / userSens) * active_scope_value), (((Recoil_AK[current_bullet][1] / 2) / userSens) * active_scope_value))
             time.sleep(ak_delay/ 1000)
             current_bullet += 1
