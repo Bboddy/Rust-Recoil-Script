@@ -1,6 +1,7 @@
 import win32api #To get key states
-import ctypes 
+import ctypes
 import time
+import random
 import pyttsx3 #TTS
 
 active = True
@@ -37,6 +38,7 @@ all_weapons = ["None", "AK", "LR", "MP5", "Custom", "Thompson", "SAR", "M2"]
 active_weapon = 0
 active_scope = 0
 active_scope_value = 1
+increment_value = random.randint(2, 6)
 
 def mouse_move(x,y):
     ctypes.windll.user32.mouse_event(0x0001, int(x), int(y), 0, 0)
@@ -67,58 +69,64 @@ def weapon_change(int):
     else:
         return (active_weapon + int)
 
-def pull_down(active_weapon):
+def control(recoil_pattern, weapon_delay, crouch_matters = False):
     current_bullet = 0
-    if active_weapon == 1:
-        while current_bullet < len(Recoil_AK) and win32api.GetKeyState(0x01) < 0:
-            mouse_move((((Recoil_AK[current_bullet][0] / 2) / userSens) * active_scope_value), (((Recoil_AK[current_bullet][1] / 2) / userSens) * active_scope_value))
-            time.sleep(ak_delay/ 1000)
+    if crouch_matters:
+        while current_bullet < len(recoil_pattern) and win32api.GetKeyState(0x01) < 0:
+            recoil_x = (((recoil_pattern[current_bullet][0] / 2) / userSens) * active_scope_value)
+            recoil_y = (((recoil_pattern[current_bullet][1] / 2) / userSens) * active_scope_value)
+            i = 0
+            while i < increment_value:
+                if win32api.GetKeyState(0x01) < 0:
+                    move_x = (recoil_x / increment_value) + random.uniform(0, 0.69)
+                    move_y = (recoil_y / increment_value) + random.uniform(0, 0.69)
+                    mouse_move(move_x, move_y)
+                    i += 1
+            time.sleep(weapon_delay/ 1000)
             current_bullet += 1
-    elif active_weapon == 2:
-        while current_bullet < len(Recoil_LR) and win32api.GetKeyState(0x01) < 0:
-            mouse_move((((Recoil_LR[current_bullet][0] / 2) / userSens) * active_scope_value), (((Recoil_LR[current_bullet][1] / 2) / userSens) * active_scope_value))
-            time.sleep(lr_delay / 1000)
-            current_bullet += 1
-    elif active_weapon == 3:
-        while current_bullet < len(Recoil_MP5) and win32api.GetKeyState(0x01) < 0:
-            mouse_move((((Recoil_MP5[current_bullet][0] / 2) / userSens) * active_scope_value), (((Recoil_MP5[current_bullet][1] / 2) / userSens) * active_scope_value))
-            time.sleep(mp5_delay / 1000)
-            current_bullet += 1
-    elif active_weapon == 4:
-        while current_bullet < len(Recoil_Custom) and win32api.GetKeyState(0x01) < 0:
-            mouse_move((((Recoil_Custom[current_bullet][0] / 2) / userSens) * active_scope_value), (((Recoil_Custom[current_bullet][1] / 2) / userSens) * active_scope_value))
-            time.sleep(custom_delay / 1000)
-            current_bullet += 1
-    elif active_weapon == 5:
-        while current_bullet < len(Recoil_Thompson) and win32api.GetKeyState(0x01) < 0:
-            mouse_move((((Recoil_Thompson[current_bullet][0] / 2) / userSens) * active_scope_value), (((Recoil_Thompson[current_bullet][1] / 2) / userSens) * active_scope_value))
-            time.sleep(tom_delay / 1000)
-            current_bullet += 1
-    elif active_weapon == 6:
-        while current_bullet < 20 and win32api.GetKeyState(0x01) < 0:
-            if win32api.GetKeyState(0x11) < 0: # If Crouching
-                mouse_move((((Recoil_SAR[0][0] / 4) / userSens) * active_scope_value), (((Recoil_SAR[0][1] / 4) / userSens) * active_scope_value))
+    else:
+        while current_bullet < len(recoil_pattern) and win32api.GetKeyState(0x01) < 0:
+            if win32api.GetKeyState(0x11) < 0:
+                recoil_x = (((recoil_pattern[current_bullet][0] / 4) / userSens) * active_scope_value)
+                recoil_y = (((recoil_pattern[current_bullet][1] / 4) / userSens) * active_scope_value)
             else:
-                mouse_move((((Recoil_SAR[0][0] / 8) / userSens) * active_scope_value), (((Recoil_SAR[0][1] / 4) / userSens) * active_scope_value))
-            time.sleep(semi_delay / 1000)
-            current_bullet += 1
-    elif active_weapon == 7:
-        while current_bullet < 100 and win32api.GetKeyState(0x01) < 0:
-            if win32api.GetKeyState(0x11) < 0: # If Crouching
-                mouse_move((((Recoil_M2[0][0] / 4) / userSens) * active_scope_value), (((Recoil_M2[0][1] / 4) / userSens) * active_scope_value))
-            else:
-                mouse_move((((Recoil_M2[0][0] / 8) / userSens) * active_scope_value), (((Recoil_M2[0][1] / 2) / userSens) * active_scope_value))
-            time.sleep(m249_delay / 1000)
+                recoil_x = (((recoil_pattern[current_bullet][0] / 8) / userSens) * active_scope_value)
+                recoil_y = (((recoil_pattern[current_bullet][1] / 8) / userSens) * active_scope_value)
+            i = 0
+            while i < increment_value:
+                if win32api.GetKeyState(0x01) < 0:
+                    move_x = (recoil_x / increment_value) + random.uniform(0, 0.69)
+                    move_y = (recoil_y / increment_value) + random.uniform(0, 0.69)
+                    mouse_move(move_x, move_y)
+                    i += 1
+            time.sleep(weapon_delay/ 1000)
             current_bullet += 1
 
+def call_recoil_control():
+    if active_weapon == 1:
+        control(Recoil_AK, ak_delay)
+    elif active_weapon == 2:
+        control(Recoil_LR, lr_delay)
+    elif active_weapon == 3:
+        control(Recoil_MP5, mp5_delay)
+    elif active_weapon == 4:
+        control(Recoil_Custom, custom_delay)
+    elif active_weapon == 5:
+        control(Recoil_Thompson, tom_delay)
+    elif active_weapon == 6:
+        control(Recoil_SAR, semi_delay)
+    elif active_weapon == 7:
+        control(Recoil_M2, m249_delay)
+
 while active:
-    while win32api.GetKeyState(0x01) < 0 and win32api.GetKeyState(0x02) < 0:
-        pull_down(active_weapon)
+    while win32api.GetKeyState(0x01) < 0: # and win32api.GetKeyState(0x02) < 0:
+        call_recoil_control()
     if win32api.GetKeyState(0x2D) < 0: #Insert
         engine.say("Exiting")
         engine.runAndWait()
         active = False
     if win32api.GetKeyState(0x22) < 0: #PageDown
+        win32api.SetCursorPos([360, 360])
         active_weapon = weapon_change(1)
         engine.say(all_weapons[active_weapon])
         engine.runAndWait()
