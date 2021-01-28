@@ -39,6 +39,7 @@ divider = 25
 sense = 0.5
 
 def mouse_move_random(x,y,draw_delay):
+    draw_delay = draw_delay / divider
     moveindex = 0
     dxindex = 0
     dyindex = 0
@@ -48,6 +49,7 @@ def mouse_move_random(x,y,draw_delay):
     ry = y % divider
 
     while moveindex < divider:
+        start_time = time.perf_counter()
         ctypes.windll.user32.mouse_event(0x0001, dx, dy, 0, 0)
         moveindex += 1
 
@@ -65,7 +67,7 @@ def mouse_move_random(x,y,draw_delay):
             dxindex += rdx
             dyindex += rdy
         # randomization add ended
-        time.sleep(draw_delay / divider)
+        time.sleep(draw_delay - (time.perf_counter() - start_time))
 
     ctypes.windll.user32.mouse_event(0x0001, int(round(x) - dxindex*int(x/abs(x))-dx*moveindex), 
         int(round(y) - dyindex*int(y/abs(y))-dy*moveindex), 0, 0)
@@ -90,7 +92,7 @@ def mouse_move(x,y,draw_delay):
         if ry * moveindex  > (dyindex + 1) * divider:
             dyindex += 1
             ctypes.windll.user32.mouse_event(0x0001, 0, int(y/abs(y)), 0, 0)
-        time.sleep(draw_delay / divider)
+        time.sleep((draw_delay / divider))
 
     if round(x) != dxindex*int(x/abs(x))+dx*moveindex:
         ctypes.windll.user32.mouse_event(0x0001, int(x/abs(x)), 0, 0, 0)
