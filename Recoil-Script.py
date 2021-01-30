@@ -74,34 +74,33 @@ def mouse_move_random(x,y,draw_delay):
     print(x, y, "=>", round(x), round(y))
     
 def mouse_move(x,y,draw_delay):
+    start_time = time.perf_counter()
     moveindex = 0
     dxindex = 0
     dyindex = 0
     dx = int(x / divider)
-    rx = abs(x - dx * divider)
+    absx = abs(x - dx * divider)
     dy = int(y / divider)
     ry = y % divider
-
     while moveindex < divider:
         ctypes.windll.user32.mouse_event(0x0001, dx, dy, 0, 0)
         moveindex += 1
-
-        if rx * moveindex  > (dxindex + 1) * divider:
+        if absx * moveindex  > (dxindex + 1) * divider:
             dxindex += 1
             ctypes.windll.user32.mouse_event(0x0001, int(x/abs(x)), 0, 0, 0)
         if ry * moveindex  > (dyindex + 1) * divider:
             dyindex += 1
             ctypes.windll.user32.mouse_event(0x0001, 0, int(y/abs(y)), 0, 0)
-        time.sleep((draw_delay / divider))
-
-    if round(x) != dxindex*int(x/abs(x))+dx*moveindex:
-        ctypes.windll.user32.mouse_event(0x0001, int(x/abs(x)), 0, 0, 0)
-        dxindex += 1
-    if round(y) != dyindex*int(y/abs(y))+dy*moveindex:
-        ctypes.windll.user32.mouse_event(0x0001, int(y/abs(y)), 0, 0, 0)
-        dyindex += 1
-        
-    print(x, y, "=>", dxindex*int(x/abs(x))+dx*moveindex, dyindex*int(y/abs(y))+dy*moveindex)
+        print(draw_delay)
+    time.sleep(draw_delay - (time.perf_counter() - start_time)) #THIS FAILS BECUASE ITS A NEGITIVE NUMBER
+    if x != 0 and y != 0:
+        if round(x) != dxindex*int(x/abs(x))+dx*moveindex:
+            ctypes.windll.user32.mouse_event(0x0001, int(x/abs(x)), 0, 0, 0)
+            dxindex += 1
+        if round(y) != dyindex*int(y/abs(y))+dy*moveindex:
+            ctypes.windll.user32.mouse_event(0x0001, int(y/abs(y)), 0, 0, 0)
+            dyindex += 1
+#print(x, y, "=>", dxindex*int(x/abs(x))+dx*moveindex, dyindex*int(y/abs(y))+dy*moveindex)
 
 def draw(draw_pattern, delay):
     current_index = 0
@@ -153,14 +152,14 @@ def call_recoil_control(): #Passing control() the correct values
         draw(Recoil_Thompson, tom_delay)
 
 while active: #Main loop
-    if win32api.GetKeyState(0x01) < 0: # and win32api.GetKeyState(0x02) < 0:
+    if win32api.GetKeyState(0x01) < 0 and win32api.GetKeyState(0x02) < 0:
         call_recoil_control()
     if win32api.GetKeyState(0x2D) < 0: #Insert
         engine.say("Exiting")
         engine.runAndWait()
         active = False
     if win32api.GetKeyState(0x22) < 0: #PageDown
-        win32api.SetCursorPos([300, 300]) #For drawing in paint (debugging)
+        #win32api.SetCursorPos([300, 300]) #For drawing in paint (debugging)
         active_weapon = weapon_change(1)
         engine.say(all_weapons[active_weapon])
         engine.runAndWait()
