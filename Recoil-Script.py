@@ -1,10 +1,13 @@
-import numpy as np
 import win32api
 import ctypes
 import time
 import pyttsx3
-from numpy import random
+import random
+import win32gui
 
+#Loop settings
+active = True
+paused = False
 #TTS Settings
 engine = pyttsx3.init()
 engine.setProperty("volume", 0.5)
@@ -20,7 +23,6 @@ Recoil_MP5 = [[0.0, 22.7147], [0.0, 30.6766], [0.0, 34.7248], [13.3435, 34.8592]
 Recoil_Custom = [[-13.9306, 27.9232], [-6.7788, 27.6898], [-0.4073, 26.938], [6.248, 25.6679], [10.4567, 23.8793], [11.5526, 21.5724], [9.5355, 18.7471], [4.4055, 16.0817], [-3.1726, 14.6362], [-9.0352, 13.3281], [-11.5846, 12.1185], [-10.8178, 11.0074], [-6.7348, 9.9947], [0.2566, 9.0805], [6.347, 8.2648], [9.8395, 7.5476], [10.7665, 6.9289], [9.128, 6.4086], [4.9239, 5.9868], [-0.9875, 5.6635], [-4.7353, 5.4387], [-6.3062, 5.3123], [-5.7881, 5.2844], [-7, 0], [19, 5], [3, 11], [61, 0], [73, 0], [54, 6], [0, 8], [50, 0]]
 Recoil_Thompson = [[-15.8279, 33.4964], [-5.8047, 33.011], [3.5853, 31.6299], [11.3567, 29.353], [13.8312, 26.1803], [10.9266, 22.1118], [2.6596, 18.7347], [-7.7474, 16.766], [-13.3286, 14.9674], [-13.1795, 13.339], [-7.3, 11.8808], [2.7772, 10.5928], [10.0402, 9.4749], [12.8529, 8.5271], [11.2323, 7.7496], [5.1785, 7.1422], [-2.8139, 6.705], [-6.8923, 6.438], [-7.3495, 6.3412], [-29, 5], [-28, 0], [-21, 5], [-12, 13], [-7, 0], [19, 5], [3, 11], [61, 0], [73, 0], [54, 6], [0, 8], [50, 0]]
 ########### Recoil Timings
-ControlTime_Ak47 = [ 121.96149709966872, 92.6333814724611, 138.60598637206294, 113.37874368443146, 66.25151186427745, 66.29530438019354, 75.9327831420658, 85.05526144256157, 89.20256669256554, 86.68010184667988, 78.82145888317788, 70.0451048111144, 60.85979604582978, 59.51642457624619, 71.66762996283607, 86.74060009403034, 98.3363599080854, 104.34161954944257, 104.09299204005345, 97.58780746901739, 85.48062700875559, 70.4889202349561, 56.56417811530545, 47.386907899993936, 56.63787408680247, 91.5937793023631, 112.38667610336424, 111.39338971888095, 87.5067801164596 ]
 ak_delay = (400 / 3) / 1000
 lr_delay = 120 / 1000
 mp5_delay = 100 / 1000
@@ -28,16 +30,21 @@ custom_delay = 100 / 1000
 tom_delay = 129.22 / 1000
 semi_delay = 150 / 1000
 m249_delay = 103 / 1000
-
+#Multipliers
 all_scopes = ["None", "8x", "16x", "Holo", "Simple",]
 all_weapons = ["None", "AK", "LR", "MP5", "Custom", "Thompson"]
 active_weapon = 0
 active_scope = 0
 active_scope_value = 1
 sense = 0.5
-
-active = True
-paused = False
+#Getting sensitvity
+file = open('C:\Program Files (x86)\Steam\steamapps\common\Rust\cfg\client.cfg')
+for line in file:
+    if "input.sensitivity" in line:
+        line = line.removeprefix("input.sensitivity")
+        line = line.replace('"', '')
+        sense = float(line)
+file.close()
 
 def mouse_move_random(x,y,draw_delay):
     divider = random.randint(25,100)
@@ -73,8 +80,8 @@ def mouse_move_random(x,y,draw_delay):
 
     ctypes.windll.user32.mouse_event(0x0001, int(round(x) - dxindex*int(x/abs(x))-dx*moveindex), 
         int(round(y) - dyindex*int(y/abs(y))-dy*moveindex), 0, 0)
-    print(x, y, "=>", round(x), round(y))
-    
+    # print(x, y, "=>", round(x), round(y))
+
 def mouse_move(x,y,draw_delay):
     divider = random.randint(25,100)
     start_time = time.perf_counter()
@@ -94,8 +101,6 @@ def mouse_move(x,y,draw_delay):
         if ry * moveindex  > (dyindex + 1) * divider:
             dyindex += 1
             ctypes.windll.user32.mouse_event(0x0001, 0, int(y/abs(y)), 0, 0)
-        print(draw_delay)
-    time.sleep(draw_delay - (time.perf_counter() - start_time)) #THIS FAILS BECUASE ITS A NEGITIVE NUMBER
     if x != 0 and y != 0:
         if round(x) != dxindex*int(x/abs(x))+dx*moveindex:
             ctypes.windll.user32.mouse_event(0x0001, int(x/abs(x)), 0, 0, 0)
@@ -103,9 +108,10 @@ def mouse_move(x,y,draw_delay):
         if round(y) != dyindex*int(y/abs(y))+dy*moveindex:
             ctypes.windll.user32.mouse_event(0x0001, int(y/abs(y)), 0, 0, 0)
             dyindex += 1
+    time.sleep(draw_delay - (time.perf_counter() - start_time))
 #print(x, y, "=>", dxindex*int(x/abs(x))+dx*moveindex, dyindex*int(y/abs(y))+dy*moveindex)
 
-def draw(draw_pattern, delay):
+def call_move(draw_pattern, delay):
     current_index = 0
     while current_index < len(draw_pattern) and win32api.GetKeyState(0x01) < 0:
         recoil_x = (((draw_pattern[current_index][0] / 2) / sense) * active_scope_value)
@@ -142,18 +148,18 @@ def weapon_change(int): #Changes the current weapon value
 
 def call_recoil_control(): #Passing control() the correct values
     if active_weapon == 1:
-        draw(Recoil_AK, ak_delay)
+        call_move(Recoil_AK, ak_delay)
     elif active_weapon == 2:
-        draw(Recoil_LR, lr_delay)
+        call_move(Recoil_LR, lr_delay)
     elif active_weapon == 3:
-        draw(Recoil_MP5, mp5_delay)
+        call_move(Recoil_MP5, mp5_delay)
     elif active_weapon == 4:
-        draw(Recoil_Custom, custom_delay)
+        call_move(Recoil_Custom, custom_delay)
     elif active_weapon == 5:
-        draw(Recoil_Thompson, tom_delay)
+        call_move(Recoil_Thompson, tom_delay)
 
 while active: #Main loop
-    if not paused:
+    if not paused and (win32gui.GetWindowText(win32gui.GetForegroundWindow()) != "Rust"): #Checks if rust is open
         if win32api.GetKeyState(0x01) < 0 and win32api.GetKeyState(0x02) < 0:
             call_recoil_control()
         if win32api.GetKeyState(0x23) < 0: #End 
