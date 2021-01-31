@@ -3,7 +3,6 @@ import ctypes
 import time
 import pyttsx3
 import random
-import win32gui
 #Loop settings
 active = True
 paused = False
@@ -93,7 +92,7 @@ def mouse_move(x,y,draw_delay):
     dy = int(y / divider)
     ry = y % divider
     while moveindex < divider:
-        ctypes.windll.user32.mouse_event(0x0001, dx, dy, 0, 0)
+        ctypes.windll.user32.mouse_event(0x0001, dx, dy, 0, 0) #Move recoil / divider
         moveindex += 1
         if absx * moveindex  > (dxindex + 1) * divider:
             dxindex += 1
@@ -163,7 +162,7 @@ get_sense()
 
 while active: #Main loop
     #While not paused
-    if not paused and (win32gui.GetWindowText(win32gui.GetForegroundWindow()) != "Rust"): #Checks if rust is open
+    if not paused:
         if win32api.GetKeyState(0x01) < 0 and win32api.GetKeyState(0x02) < 0:
             call_recoil_control()
         if win32api.GetKeyState(0x22) < 0: #PageDown
