@@ -4,7 +4,6 @@ import time
 import pyttsx3
 import random
 import win32gui
-
 #Loop settings
 active = True
 paused = False
@@ -38,13 +37,14 @@ active_scope = 0
 active_scope_value = 1
 sense = 0.5
 #Getting sensitvity
-file = open('C:\Program Files (x86)\Steam\steamapps\common\Rust\cfg\client.cfg')
-for line in file:
-    if "input.sensitivity" in line:
-        line = line.removeprefix("input.sensitivity")
-        line = line.replace('"', '')
-        sense = float(line)
-file.close()
+def get_sense():
+    global sense
+    file = open('C:\Program Files (x86)\Steam\steamapps\common\Rust\cfg\client.cfg')
+    for line in file:
+        if "input.sensitivity" in line:
+            line = line.replace('"', '')
+            sense = float(line.replace('input.sensitivity', ''))
+    file.close()
 
 def mouse_move_random(x,y,draw_delay):
     divider = random.randint(25,100)
@@ -158,14 +158,14 @@ def call_recoil_control(): #Passing control() the correct values
     elif active_weapon == 5:
         call_move(Recoil_Thompson, tom_delay)
 
+#Setting sense
+get_sense()
+
 while active: #Main loop
+    #While not paused
     if not paused and (win32gui.GetWindowText(win32gui.GetForegroundWindow()) != "Rust"): #Checks if rust is open
         if win32api.GetKeyState(0x01) < 0 and win32api.GetKeyState(0x02) < 0:
             call_recoil_control()
-        if win32api.GetKeyState(0x23) < 0: #End 
-            engine.say("Exiting")
-            engine.runAndWait()
-            active = False
         if win32api.GetKeyState(0x22) < 0: #PageDown
             #win32api.SetCursorPos([300, 300]) #For drawing in paint (debugging)
             active_weapon = weapon_change(1)
@@ -180,6 +180,9 @@ while active: #Main loop
             active_scope_value = get_active_scope_value()
             engine.say(all_scopes[active_scope])
             engine.runAndWait()
+    #Doesnt Matter if Paused
+    if win32api.GetKeyState(0x91) < 0: #ScrLk
+        get_sense()
     if win32api.GetKeyState(0x13) < 0: #Pause
         paused = not paused
         if paused:
@@ -188,3 +191,7 @@ while active: #Main loop
         elif not paused:
             engine.say("Unpaused")
             engine.runAndWait()
+    if win32api.GetKeyState(0x23) < 0: #End 
+            engine.say("Exiting")
+            engine.runAndWait()
+            active = False
