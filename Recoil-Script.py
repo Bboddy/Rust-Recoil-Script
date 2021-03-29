@@ -1,11 +1,9 @@
-import win32api
-import ctypes
-import time
-import pyttsx3
-import random
+import win32api, ctypes, time, pyttsx3, random
+
 #Loop settings
 active = True
 paused = False
+drawDot = True
 #TTS Settings
 engine = pyttsx3.init()
 engine.setProperty("volume", 0.5)
@@ -82,7 +80,7 @@ def mouse_move_random(x,y,draw_delay):
     # print(x, y, "=>", round(x), round(y))
 
 def mouse_move(x,y,draw_delay):
-    divider = random.randint(25,100)
+    divider = random.randint(20,35)
     start_time = time.perf_counter()
     moveindex = 0
     dxindex = 0
@@ -109,6 +107,35 @@ def mouse_move(x,y,draw_delay):
             dyindex += 1
     time.sleep(draw_delay - (time.perf_counter() - start_time))
 #print(x, y, "=>", dxindex*int(x/abs(x))+dx*moveindex, dyindex*int(y/abs(y))+dy*moveindex)
+
+def mouse_move_rng(x,y,draw_delay):
+    divider = random.randint(20,35)
+    start_time = time.perf_counter()
+    moveindex = 0
+    dxindex = 0
+    dyindex = 0
+    dx = int(x / divider)
+    absx = abs(x - dx * divider)
+    dy = int(y / divider)
+    ry = y % divider
+    while moveindex < divider:
+        rng = random.randrange(-0.7, 0.7)
+        ctypes.windll.user32.mouse_event(0x0001, dx, dy, 0, 0) #Move recoil / divider
+        moveindex += 1
+        if absx * moveindex  > (dxindex + 1) * divider:
+            dxindex += 1
+            ctypes.windll.user32.mouse_event(0x0001, int(x/abs(x) + rng), 0, 0, 0)
+        if ry * moveindex  > (dyindex + 1) * divider:
+            dyindex += 1
+            ctypes.windll.user32.mouse_event(0x0001, 0, int(y/abs(y) + rng), 0, 0)
+    if x != 0 and y != 0:
+        if round(x) != dxindex*int(x/abs(x))+dx*moveindex:
+            ctypes.windll.user32.mouse_event(0x0001, int(x/abs(x)), 0, 0, 0)
+            dxindex += 1
+        if round(y) != dyindex*int(y/abs(y))+dy*moveindex:
+            ctypes.windll.user32.mouse_event(0x0001, int(y/abs(y)), 0, 0, 0)
+            dyindex += 1
+    time.sleep(draw_delay - (time.perf_counter() - start_time))
 
 def call_move(draw_pattern, delay):
     current_index = 0
@@ -163,10 +190,9 @@ get_sense()
 while active: #Main loop
     #While not paused
     if not paused:
-        if win32api.GetKeyState(0x01) < 0 and win32api.GetKeyState(0x02) < 0:
+        if win32api.GetKeyState(0x01) < 0: # and win32api.GetKeyState(0x02) < 0:
             call_recoil_control()
         if win32api.GetKeyState(0x22) < 0: #PageDown
-            #win32api.SetCursorPos([300, 300]) #For drawing in paint (debugging)
             active_weapon = weapon_change(1)
             engine.say(all_weapons[active_weapon])
             engine.runAndWait()
