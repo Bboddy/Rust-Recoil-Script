@@ -9,7 +9,8 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import mysql.connector
-import threading
+from threading import Thread
+import Overlay
 import Recoil
 import os
 
@@ -33,10 +34,11 @@ class Ui_MainWindow(object):
                 self.lblStatus.setText("Login Failed")
             else:
                 self.lblStatus.setText("Logged In")
-                scriptThread = threading.Thread(target=Recoil.run)
-                scriptThread.start()
+
+                Thread(target = Overlay.draw).start()
+                Thread(target = Recoil.run).start()
+
                 self.hide()
-                scriptThread.join()
                 self.close
 
     def __register(self):
