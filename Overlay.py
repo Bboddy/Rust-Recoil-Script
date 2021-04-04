@@ -2,6 +2,7 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Crosshair(QtWidgets.QWidget):
+
     def __init__(self, parent=None, windowSize=24, penWidth=2):
         QtWidgets.QWidget.__init__(self, parent)
         self.ws = windowSize
@@ -11,7 +12,8 @@ class Crosshair(QtWidgets.QWidget):
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.WindowTransparentForInput)
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         self.move(QtWidgets.QApplication.desktop().screen().rect().center() - self.rect().center() + QtCore.QPoint(1,1))
-
+        self.setWindowFlag(QtCore.Qt.Tool)
+        self.setWindowTitle("Easy4.me")
 
     def paintEvent(self, event):
         ws = self.ws
