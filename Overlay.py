@@ -27,6 +27,7 @@ class Crosshair(QtWidgets.QWidget):
         painter.drawLine(   ws/2 + ws/d, ws/2,     ws, ws/2            )   # Right
 
 def draw():
+    global widget2
     app1 = QtWidgets.QApplication(sys.argv)
 
     widget2 = Crosshair(windowSize=24, penWidth=1)
