@@ -62,11 +62,13 @@ Next you will need your DB info
 
 I decided to encrypt all of my connection strings before hand using cryptography.fernet
 
+To encrypt all of your connection strings folow this for each of what you want encrypted
+
+Otherwise remove the encryption from mysql.connector.connect(EVERYTHING IN HERE) and replace with unencrypted info
+
 ![carbon (3)](https://user-images.githubusercontent.com/43559704/144001009-7113d64f-6ef4-410a-9964-10dc887b5412.png)
 
-Repeat this for your DB, Username, Password
-
-Once encrypted put them into there respective spots in Loader.py
+Once encrypted put them into there respective spots in Loader.py mysql.connector.connect(IN HERE)
 
 ## Credits
 
