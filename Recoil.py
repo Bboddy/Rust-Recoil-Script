@@ -1,4 +1,4 @@
-import win32api, ctypes, pyttsx3, random, time
+import win32api, ctypes, pyttsx3, random, multiprocessing, Overlay
 from datetime import datetime, timedelta
 #Loop settings
 active = True
@@ -138,10 +138,17 @@ def weapon_change(int): #Changes the current weapon value
     else:
         return (active_weapon + int)
 
+proc = multiprocessing.Process(target=Overlay.draw, args=())
+
+def start_overlay():
+    global proc
+    proc.start()
+
 def run():
-    global active, paused, active_weapon, start_time, Recoil_Tables, Recoil_Delays
-    #Setting sense
+    global active, paused, active_weapon, start_time, Recoil_Tables, Recoil_Delays, proc
+    #Startup Functions
     get_sense()
+    start_overlay()
     #TTS Settings
     engine = pyttsx3.init()
     engine.setProperty("volume", 0.5)
@@ -185,4 +192,5 @@ def run():
         if win32api.GetKeyState(0x23) < 0: #End 
                 engine.say("Exiting")
                 engine.runAndWait()
+                proc.terminate()
                 active = False

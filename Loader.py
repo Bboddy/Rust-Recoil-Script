@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from cryptography.fernet import Fernet
-import mysql.connector, threading, Recoil, os, subprocess, time
+import mysql.connector, threading, Recoil, os, subprocess, time, Overlay
 
 class Ui_MainWindow(object):
     def __login(self):
@@ -44,11 +44,14 @@ class Ui_MainWindow(object):
                         self.lblStatus.setText("Login Failed")
                         time.sleep(2)
                         sys.exit()
+                #overlayThread = threading.Thread(target=Overlay.draw)
+                #overlayThread.start()
                 scriptThread = threading.Thread(target=Recoil.run) #Start Script
                 self.lblStatus.setText("Logged In")
                 self.hide()
                 scriptThread.start()
                 scriptThread.join()
+                #overlayThread.join()
             threading.Timer(2.5, sys.exit()).start()
 
     def __register(self):
