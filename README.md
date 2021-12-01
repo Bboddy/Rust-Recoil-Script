@@ -16,7 +16,6 @@
   - Pause to pause the script
   - Home to cycle scopes
   - ScrLk to update sensitivity (the script grabs it at the start, use if changed after starting the script)
-  - Game path is assumed (C:\Program Files (x86)\Steam\steamapps\common)
   - End to quit the script
 
 ## Warning
