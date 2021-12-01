@@ -4,7 +4,7 @@
 
 ![Untitled](https://user-images.githubusercontent.com/43559704/143996297-681039bf-a738-40e5-9881-5c50638ef14b.gif)
 
-## How to use exe
+## For Simple Use
 
 * Click <a href="https://github.com/Bboddy/Rust-Recoil-Script/releases" target="_blank">Releases</a>
   - Select the latest one
@@ -16,6 +16,7 @@
   - Pause to pause the script
   - Home to cycle scopes
   - ScrLk to update sensitivity (the script grabs it at the start, use if changed after starting the script)
+  - Game path is assumed (C:\Program Files (x86)\Steam\steamapps\common)
   - End to quit the script
 
 ## Warning
@@ -24,7 +25,7 @@
   - Using this on EAC may result in a ban
   - Only randomization is within the smoothing
 
-## For Personal Use
+## Settings
 * Fov is best at 90
   - Best sense is 0.5
 * Dont Use Overlay
@@ -34,6 +35,8 @@
   - This was built for fun and to send to some friends
 * Best to Change these lines with some more randomization 
   ![carbon (1)](https://user-images.githubusercontent.com/43559704/143992047-9b11df27-b16c-4975-a11a-26b3767d5ebf.png)
+* If game path is not (C:\Program Files (x86)\Steam\steamapps\common\Rust\cfg\client.cfg)
+  - Update game path on line 59
 
 ## How To Use
 
