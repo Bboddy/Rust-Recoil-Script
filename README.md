@@ -1,6 +1,6 @@
 # Recoil-Script
-![GitHub last commit](https://img.shields.io/github/last-commit/Bboddy/Recoil-Script) ![GitHub all releases](https://img.shields.io/github/downloads/Bboddy/Recoil-Script/total) <br>
-<h3>Controls recoil from <a href="https://rust.facepunch.com/" target="_blank">Rust</a>, with smoothing and randomization.</h3>
+![GitHub last commit](https://img.shields.io/github/last-commit/Bboddy/Recoil-Script) ![GitHub all releases](https://img.shields.io/github/downloads/Bboddy/Rust-Recoil-Script/total) <br>
+<h3>Controls recoil most all the guns in <a href="https://rust.facepunch.com/" target="_blank">Rust</a>, with smoothing and randomization.</h3>
 
 ![Untitled](https://user-images.githubusercontent.com/43559704/143996297-681039bf-a738-40e5-9881-5c50638ef14b.gif)
 
@@ -69,7 +69,9 @@ $ python Recoil.py
 
   - I decided to encrypt all of my connection strings before hand using cryptography.fernet
 
-![carbon (3)](https://user-images.githubusercontent.com/43559704/144001009-7113d64f-6ef4-410a-9964-10dc887b5412.png)
+To encrypt all of your connection strings folow this for each of what you want encrypted
+
+Otherwise remove the encryption from mysql.connector.connect(EVERYTHING IN HERE) and replace with unencrypted info
 
   - Repeat this for your DB, Username, Password
   - Once encrypted put them into there respective spots in Loader.py
@@ -80,6 +82,9 @@ $ python Recoil.py
   - ```bash
   - $ python Loader.py
   - ```
+![carbon (3)](https://user-images.githubusercontent.com/43559704/144001009-7113d64f-6ef4-410a-9964-10dc887b5412.png)
+
+Once encrypted put them into there respective spots in Loader.py mysql.connector.connect(IN HERE)
 
 ## Credits
 
