@@ -78,7 +78,7 @@ $ python Recoil.py
 
 * To encrypt all of your connection strings folow this for each of what you want encrypted
 
-* Otherwise remove the encryption from mysql.connector.connect(EVERYTHING IN HERE) and replace with unencrypted info
+* Otherwise remove the encryption from mysql.connector.connect(everything in here) and replace with unencrypted info
 
   - Repeat this for your DB, Username, Password
   - Once encrypted put them into there respective spots in Loader.py
@@ -86,12 +86,12 @@ $ python Recoil.py
 * Remove line 198 n 199 from Recoil.py
 
   - Run the app
-  - ```bash
-  - $ python Loader.py
-  - ```
+```bash
+$ python Loader.py
+ ```
 ![carbon (3)](https://user-images.githubusercontent.com/43559704/144001009-7113d64f-6ef4-410a-9964-10dc887b5412.png)
 
-Once encrypted put them into there respective spots in Loader.py mysql.connector.connect(IN HERE)
+- Once encrypted put them into there respective spots in Loader.py mysql.connector.connect(inside here)
 
 ## Credits
 
