@@ -4,6 +4,20 @@
 
 ![Untitled](https://user-images.githubusercontent.com/43559704/143996297-681039bf-a738-40e5-9881-5c50638ef14b.gif)
 
+## How to use exe
+
+* Click <a href="https://github.com/Bboddy/Rust-Recoil-Script/releases" target="_blank">Releases</a>
+  - Select the latest one
+  - Download the exe
+  - Run the exe
+
+* Keybinds
+  - PgUp/PgDn to cycle weapons
+  - Pause to pause the script
+  - Home to cycle scopes
+  - ScrLk to update sensitivity (the script grabs it at the start, use if changed after starting the script)
+  - End to quit the script
+
 ## Warning
 
 * Use At Your Own Risk
@@ -26,36 +40,29 @@
 To clone and run this application, you'll need [Git](https://git-scm.com) and [Python 3.9](https://www.python.org/downloads/release/python-399/)
 
 
-*Clone this repository
+* Clone this repository
 ```bash
 $ git clone https://github.com/Bboddy/Recoil-Script
 ```
 
-*Go into the repository
+* Go into the repository
 ```bash
 $ cd Recoil-Script
 ```
 
-*Install Packages
+* Install Packages
 ```bash
 $ pip install -r requirements.txt
 ```
 
-*Run the app
+* Run the app
 ```bash
 $ python Recoil.py
 ```
 
-*Keybinds
-  - PgUp/PgDn to cycle weapons
-  - Pause to pause the script
-  - Home to cycle scopes
-  - ScrLk to update sensitivity (the script grabs it at the start, use if changed after starting the script)
-  - End to quit the script
-
 ## How To Use Loader
 
-*You will need a Database setup as such
+* You will need a Database setup as such
 
 ![Screenshot_2](https://user-images.githubusercontent.com/43559704/144000003-438599a5-c66d-4976-a2b9-066804bde567.png)
 
@@ -63,20 +70,20 @@ $ python Recoil.py
 
   - I am using PHPmyadmin setup on Cpanel
 
-*Next you will need your DB info
+* Next you will need your DB info
 
 ![carbon (2)](https://user-images.githubusercontent.com/43559704/144000309-ab9ed88e-24e7-48b2-af2f-3ccb40e3fc2b.png)
 
   - I decided to encrypt all of my connection strings before hand using cryptography.fernet
 
-To encrypt all of your connection strings folow this for each of what you want encrypted
+* To encrypt all of your connection strings folow this for each of what you want encrypted
 
-Otherwise remove the encryption from mysql.connector.connect(EVERYTHING IN HERE) and replace with unencrypted info
+* Otherwise remove the encryption from mysql.connector.connect(EVERYTHING IN HERE) and replace with unencrypted info
 
   - Repeat this for your DB, Username, Password
   - Once encrypted put them into there respective spots in Loader.py
 
-*Remove line 198 n 199 from Recoil.py
+* Remove line 198 n 199 from Recoil.py
 
   - Run the app
   - ```bash
