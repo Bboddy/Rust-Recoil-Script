@@ -194,3 +194,6 @@ def run():
                 engine.runAndWait()
                 proc.terminate()
                 active = False
+
+if __name__ == '__main__':
+    run()
