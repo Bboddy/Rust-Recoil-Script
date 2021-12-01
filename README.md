@@ -64,6 +64,8 @@ $ python Recoil.py
 
 ## How To Use Loader
 
+* *This is'nt secure*
+
 * You will need a Database setup as such
 
 ![Screenshot_2](https://user-images.githubusercontent.com/43559704/144000003-438599a5-c66d-4976-a2b9-066804bde567.png)
