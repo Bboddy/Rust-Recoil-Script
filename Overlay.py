@@ -2,11 +2,11 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Crosshair(QtWidgets.QWidget):
-
-    def __init__(self, parent=None, windowSize=24, penWidth=2):
+    def __init__(self, parent=None, windowSize=24, penWidth=2, w=" AK"):
         QtWidgets.QWidget.__init__(self, parent)
+        self.weapon = w
         self.ws = windowSize
-        self.resize(windowSize+1, windowSize+1)
+        self.resize(24+1, 50+1)
         self.pen = QtGui.QPen(QtGui.QColor(231, 60, 126, 255))
         self.pen.setWidth(penWidth)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.WindowTransparentForInput)
@@ -17,20 +17,21 @@ class Crosshair(QtWidgets.QWidget):
 
     def paintEvent(self, event):
         ws = self.ws
-        d = 6
+        d = 5
         painter = QtGui.QPainter(self)
         painter.setPen(self.pen)
-        # painter.drawLine( x1,y1, x2,y2    )
-        painter.drawLine(   ws/2, 0,               ws/2, ws/2 - ws/d   )   # Top
-        painter.drawLine(   ws/2, ws/2 + ws/d,     ws/2, ws            )   # Bottom
-        painter.drawLine(   0, ws/2,               ws/2 - ws/d, ws/2   )   # Left
-        painter.drawLine(   ws/2 + ws/d, ws/2,     ws, ws/2            )   # Right
+        painter.drawLine(int(ws/2), 0 + 13, int(ws/2), int(ws/2) - int(ws/d) + 13) # Top
+        painter.drawLine(int(ws/2), int(ws/2) + int(ws/d) + 13, int(ws/2), int(ws) + 13) # Bottom
+        painter.drawLine(0, int(ws/2) + 13, int(ws/2) - int(ws/d), int(ws/2) + 13) # Left
+        painter.drawLine(int(ws/2) + int(ws/d), int(ws/2) + 13, int(ws), int(ws/2) + 13) # Right
 
-def draw():
-    global widget2
+        wep = painter.drawText(3,50, self.weapon)
+
+def draw(weapon):
+    global overlay
     app1 = QtWidgets.QApplication(sys.argv)
 
-    widget2 = Crosshair(windowSize=24, penWidth=1)
-    widget2.show()
+    overlay = Crosshair(windowSize=24, penWidth=1, w=weapon)
+    overlay.show()
 
-    sys.exit(app1.exec_())
+    app1.exec_()

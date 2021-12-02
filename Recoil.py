@@ -52,6 +52,7 @@ Scope_Values = [
 #Multipliers
 all_scopes = ["None", "8x", "16x", "Holo", "Simple",]
 all_weapons = ["AK", "LR", "MP5", "Custom", "Thompson", "M2", "Sar", "M9", "Python"]
+weapon_overlay = [" AK", " LR", "MP5", "CUS", "TOM", " M2", "SAR", " M9", " PY"]
 active_weapon, active_scope, start_time = 0, 0, 0
 
 def get_sense(): #Getting sensitivity
@@ -138,17 +139,13 @@ def weapon_change(int): #Changes the current weapon value
     else:
         return (active_weapon + int)
 
-proc = multiprocessing.Process(target=Overlay.draw, args=())
-
-def start_overlay():
-    global proc
-    proc.start()
-
 def run():
-    global active, paused, active_weapon, start_time, Recoil_Tables, Recoil_Delays, proc
+    global active, paused, active_weapon, start_time, Recoil_Tables, Recoil_Delays, weapon_overlay
     #Startup Functions
     get_sense()
-    start_overlay()
+    #Start Overlay
+    p = multiprocessing.Process(target=Overlay.draw, args=[weapon_overlay[active_weapon]])
+    p.start()
     #TTS Settings
     engine = pyttsx3.init()
     engine.setProperty("volume", 0.5)
@@ -166,10 +163,16 @@ def run():
             if win32api.GetKeyState(0x22) < 0: #PageDown
                 #win32api.SetCursorPos([300, 300]) #For drawing in paint (debugging)
                 active_weapon = weapon_change(1)
+                p.terminate()
+                p = multiprocessing.Process(target=Overlay.draw, args=[weapon_overlay[active_weapon]])
+                p.start()
                 engine.say(all_weapons[active_weapon])
                 engine.runAndWait()
             if win32api.GetKeyState(0x21) < 0: #PageUp
                 active_weapon = weapon_change(-1)
+                p.terminate()
+                p = multiprocessing.Process(target=Overlay.draw, args=[weapon_overlay[active_weapon]])
+                p.start()
                 engine.say(all_weapons[active_weapon])
                 engine.runAndWait()
             if win32api.GetKeyState(0x24) < 0: #Home
@@ -191,8 +194,8 @@ def run():
                 engine.runAndWait()
         if win32api.GetKeyState(0x23) < 0: #End 
                 engine.say("Exiting")
+                p.terminate()
                 engine.runAndWait()
-                proc.terminate()
                 active = False
 
 if __name__ == '__main__':
