@@ -52,6 +52,7 @@ Scope_Values = [
 #Multipliers
 all_scopes = ["None", "8x", "16x", "Holo", "Simple",]
 all_weapons = ["AK", "LR", "MP5", "Custom", "Thompson", "M2", "Sar", "M9", "Python"]
+scopes_overlay = [" ", " 8X", "16X", " HOL", "SIM",]
 weapon_overlay = [" AK", " LR", "MP5", "CUS", "TOM", " M2", "SAR", " M9", " PY"]
 active_weapon, active_scope, start_time = 0, 0, 0
 
@@ -144,7 +145,7 @@ def run():
     #Startup Functions
     get_sense()
     #Start Overlay
-    p = multiprocessing.Process(target=Overlay.draw, args=[weapon_overlay[active_weapon]])
+    p = multiprocessing.Process(target=Overlay.draw, args=[weapon_overlay[active_weapon], scopes_overlay[active_scope]])
     p.start()
     #TTS Settings
     engine = pyttsx3.init()
@@ -164,19 +165,22 @@ def run():
                 #win32api.SetCursorPos([300, 300]) #For drawing in paint (debugging)
                 active_weapon = weapon_change(1)
                 p.terminate()
-                p = multiprocessing.Process(target=Overlay.draw, args=[weapon_overlay[active_weapon]])
+                p = multiprocessing.Process(target=Overlay.draw, args=[weapon_overlay[active_weapon], scopes_overlay[active_scope]])
                 p.start()
                 engine.say(all_weapons[active_weapon])
                 engine.runAndWait()
             if win32api.GetKeyState(0x21) < 0: #PageUp
                 active_weapon = weapon_change(-1)
                 p.terminate()
-                p = multiprocessing.Process(target=Overlay.draw, args=[weapon_overlay[active_weapon]])
+                p = multiprocessing.Process(target=Overlay.draw, args=[weapon_overlay[active_weapon], scopes_overlay[active_scope]])
                 p.start()
                 engine.say(all_weapons[active_weapon])
                 engine.runAndWait()
             if win32api.GetKeyState(0x24) < 0: #Home
                 scope_change()
+                p.terminate()
+                p = multiprocessing.Process(target=Overlay.draw, args=[weapon_overlay[active_weapon], scopes_overlay[active_scope]])
+                p.start()
                 engine.say(all_scopes[active_scope])
                 engine.runAndWait()
         #Doesnt Matter if Paused

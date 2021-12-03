@@ -2,11 +2,12 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Crosshair(QtWidgets.QWidget):
-    def __init__(self, parent=None, windowSize=24, penWidth=2, w=" AK"):
+    def __init__(self, parent=None, windowSize=24, penWidth=2, w=" AK", scope="Nil"):
         QtWidgets.QWidget.__init__(self, parent)
         self.weapon = w
+        self.scope = scope
         self.ws = windowSize
-        self.resize(24+1, 50+1)
+        self.resize(24+1, 60+1)
         self.pen = QtGui.QPen(QtGui.QColor(231, 60, 126, 255))
         self.pen.setWidth(penWidth)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.WindowTransparentForInput)
@@ -25,13 +26,14 @@ class Crosshair(QtWidgets.QWidget):
         painter.drawLine(0, int(ws/2) + 13, int(ws/2) - int(ws/d), int(ws/2) + 13) # Left
         painter.drawLine(int(ws/2) + int(ws/d), int(ws/2) + 13, int(ws), int(ws/2) + 13) # Right
 
-        wep = painter.drawText(3,50, self.weapon)
+        painter.drawText(3, 50, self.weapon)
+        painter.drawText(3, 60, self.scope)
 
-def draw(weapon):
+def draw(weapon, scope):
     global overlay
     app1 = QtWidgets.QApplication(sys.argv)
 
-    overlay = Crosshair(windowSize=24, penWidth=1, w=weapon)
+    overlay = Crosshair(windowSize=24, penWidth=1, w=weapon, scope=scope)
     overlay.show()
 
     app1.exec_()
