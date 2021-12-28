@@ -87,7 +87,7 @@ $ python Recoil.py
   - Repeat this for your DB, Username, Password
   - Once encrypted put them into there respective spots in Loader.py
 
-* Remove line 198 n 199 from Recoil.py
+* Remove last two lines from Recoil.py
 
   - Run the app
 ```bash
