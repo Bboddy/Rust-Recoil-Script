@@ -4,6 +4,9 @@
 
 ![Untitled](https://user-images.githubusercontent.com/43559704/143996297-681039bf-a738-40e5-9881-5c50638ef14b.gif)
 
+This script was relased because the abundant amount of people selling garbage scripts that are pasted or took them a week to write.
+No one should be paying for a script, the game does extreemly little to detect scripts and the fact that people are charging monthly for them is stupid.
+
 ## For Simple Use
 
 * Click <a href="https://github.com/Bboddy/Rust-Recoil-Script/releases" target="_blank">Releases</a>
@@ -61,6 +64,20 @@ $ pip install -r requirements.txt
 ```bash
 $ python Recoil.py
 ```
+## How to Make Safe
+
+# Testing
+  - To test download steamcmd and setup a rust local server (https://www.rustafied.com/how-to-host-your-own-rust-server)
+  - Set the launch options to (+server.secure 0 +server.eac 0 +server.encryption 0) then simply run RustClient.exe <- this runs rust without eac.
+
+# Detection
+- To make the script undetected you need to change the script to where the binaries are different enough from the original so that EAC / VAC cannot match the signatures of the two scripts. (This is assuming my script is detected by now.) 
+- Changing binaries is done in one of two ways, adding a ton of junk code i.e. code that does nothing. Or modify / refactor the script entirely.
+- You can check binarys a number of ways, the easiest probably being Sigbench which was released on unknowncheats.
+
+# Remaining Undetected
+- Alot of people claim mouse_event is detected but aslong as you arnt sharing your script with a ton of people you will be fine.
+- I used this script for ~9 months with 1-3 people with no bans.
 
 ## How To Use Loader
 
