@@ -1,5 +1,8 @@
 # Recoil-Script
 ![GitHub last commit](https://img.shields.io/github/last-commit/Bboddy/Recoil-Script) ![GitHub all releases](https://img.shields.io/github/downloads/Bboddy/Rust-Recoil-Script/total) <br>
+
+<h1>OUTDATED (the game has randomized all recoil)</h1>
+
 <h3>Controls recoil most all the guns in <a href="https://rust.facepunch.com/" target="_blank">Rust</a>, with smoothing and randomization.</h3>
 
 ![Untitled](https://user-images.githubusercontent.com/43559704/143996297-681039bf-a738-40e5-9881-5c50638ef14b.gif)
