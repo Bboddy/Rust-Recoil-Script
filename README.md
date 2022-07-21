@@ -1,5 +1,5 @@
 # Recoil-Script
-![GitHub last commit](https://img.shields.io/github/last-commit/Bboddy/Recoil-Script) ![GitHub all releases](https://img.shields.io/github/downloads/Bboddy/Rust-Recoil-Script/total) <br>
+![GitHub last commit](https://img.shields.io/github/last-commit/Bboddy/Recoil-Script) ![GitHub all releases](https://img.shields.io/github/downloads/Bboddy/Rust-Recoil-Script/total) ![Views](https://views.whatilearened.today/views/github/Bboddy/Rust-Recoil-Script.svg) <br>
 
 <h1>OUTDATED (the game has randomized all recoil)</h1>
 
