@@ -124,6 +124,3 @@ $ python Loader.py
 - [absolutenothing](https://www.unknowncheats.me/forum/rust/335162-gun-recoil-tables-crouched-standing.html) - Some of the Recoil Tables
 - [RandyShanks](https://www.unknowncheats.me/forum/rust/386523-rust-recoil-tables-pixel.html) - Some of the Recoil Tables
 - [UC](https://www.unknowncheats.me/forum/rust/) - Everything else
-
-## Idiots Stealing The Source
-- [NunoZzzZ](https://www.unknowncheats.me/forum/rust/482483-recoil-script-1-0-external-python.html#post3327893%5C) - Changing keybinds = Yours 👍
